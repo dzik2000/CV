@@ -23,13 +23,15 @@ height:100%;
 display:flex;
 justify-content:center;
 align-items:center;
+transition:opacity 1s;
 }
 
 /* BUDYNEK */
 
 #building img{
 width:120%;
-animation:zoomBuilding 3s forwards;
+transform-origin:50% 85%;
+animation:zoomBuilding 4s forwards;
 }
 
 @keyframes zoomBuilding{
@@ -45,12 +47,13 @@ opacity:0;
 
 #deskScene img{
 width:900px;
-animation:zoomDesk 4s forwards;
+transform-origin:60% 40%;
+animation:zoomMonitor 4s forwards;
 }
 
-@keyframes zoomDesk{
+@keyframes zoomMonitor{
 from{transform:scale(0.8)}
-to{transform:scale(2.5)}
+to{transform:scale(3)}
 }
 
 /* BIOS */
@@ -73,7 +76,7 @@ color:#00ff66;
 font-size:20px;
 }
 
-/* CRT effect */
+/* CRT scanlines */
 
 pre::after{
 content:"";
@@ -105,25 +108,19 @@ outline:none;
 
 <body>
 
-<audio id="bootSound" src="boot.mp3"></audio>
-
-<!-- SCENA 1 BUDYNEK -->
+<!-- SCENA BUDYNEK -->
 
 <div id="building" class="scene">
-
 <img src="budynek.png">
-
 </div>
 
-<!-- SCENA 2 BIURKO -->
+<!-- SCENA BIURKO -->
 
 <div id="deskScene" class="scene">
-
 <img src="desk.png">
-
 </div>
 
-<!-- SCENA 3 BIOS -->
+<!-- SCENA BIOS -->
 
 <div id="bios">
 
@@ -151,18 +148,17 @@ outline:none;
 setTimeout(()=>{
 document.getElementById("building").style.opacity="0"
 document.getElementById("deskScene").style.opacity="1"
-},3000)
+},4000)
 
 setTimeout(()=>{
 document.getElementById("deskScene").style.opacity="0"
 document.getElementById("bios").style.opacity="1"
-document.getElementById("bootSound").play()
 startBoot()
-},6500)
+},8000)
 
 /* BIOS */
 
-const boot = document.getElementById("boot")
+const boot=document.getElementById("boot")
 
 const bootLines=[
 
@@ -272,7 +268,7 @@ res="/profil /wyksztalcenie /umiejetnosci /zadania /kontakt"
 break
 
 case "/profil":
-res="Kandydat: Domek\nStanowisko: Młodszy Informatyk\nZainteresowania: administracja systemów"
+res="Kandydat: Domek\nStanowisko: Młodszy Informatyk"
 break
 
 case "/wyksztalcenie":
@@ -284,7 +280,7 @@ res="Instalacja Windows\nDiagnostyka sprzętu\nLinux\nAutomatyzacja Python"
 break
 
 case "/zadania":
-res="Instalacja systemów\nKonfiguracja stacji roboczych\nHelpdesk\nAktualizacje oprogramowania"
+res="Instalacja systemów\nHelpdesk\nAktualizacje\nAdministracja stacji roboczych"
 break
 
 case "/kontakt":
