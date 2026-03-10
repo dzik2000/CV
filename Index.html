@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CV - Terminal</title>
+
+<style>
+body{
+background:black;
+color:#00ff00;
+font-family: monospace;
+padding:20px;
+}
+
+#terminal{
+max-width:900px;
+margin:auto;
+}
+
+input{
+background:black;
+border:none;
+color:#00ff00;
+font-family:monospace;
+outline:none;
+width:80%;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="terminal">
+<pre id="boot">
+
+Phoenix BIOS v4.0 Release 6.0
+Copyright 1985-1999 Phoenix Technologies
+
+Detecting hardware...
+CPU: OK
+Memory: 8192K OK
+
+Booting CV-System...
+
+Type /help to list commands
+
+</pre>
+
+<div>
+<span>C:\CV></span>
+<input id="command" autofocus>
+</div>
+
+<div id="output"></div>
+</div>
+
+<script>
+
+const commandInput = document.getElementById("command");
+const output = document.getElementById("output");
+
+commandInput.addEventListener("keydown", function(e){
+
+if(e.key === "Enter"){
+
+let cmd = commandInput.value.trim();
+
+let response = "";
+
+switch(cmd){
+
+case "/help":
+response = `
+/wyksztalcenie
+/umiejetnosci
+/projekty
+/kontakt
+`;
+break;
+
+case "/wyksztalcenie":
+response = `
+Technikum Informatyczne
+Specjalizacja: Systemy komputerowe
+`;
+break;
+
+case "/umiejetnosci":
+response = `
+Python
+Linux
+OBS
+Automatyzacja
+HTML/CSS
+`;
+break;
+
+case "/projekty":
+response = `
+Bot TikTok Live
+Mini gra dla streamów
+Automatyczne alerty OBS
+`;
+break;
+
+case "/kontakt":
+response = `
+email: twoj@email
+github: github.com/twojprofil
+`;
+break;
+
+default:
+response = "Nieznana komenda. wpisz /help";
+}
+
+output.innerHTML += "<pre>" + cmd + "\n" + response + "</pre>";
+
+commandInput.value="";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
