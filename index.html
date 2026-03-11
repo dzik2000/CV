@@ -85,7 +85,7 @@ white-space:pre-wrap;
 word-break:break-word;
 }
 
-/* TERMINAL INPUT */
+/* TERMINAL */
 
 #command{
 background:black;
@@ -101,6 +101,7 @@ width:300px;
 
 .photo{
 margin-top:10px;
+max-width:300px;
 image-rendering:pixelated;
 }
 
@@ -110,8 +111,8 @@ animation: sharpen 0.6s linear;
 
 @keyframes sharpen{
 
-0%{filter:blur(12px)}
-50%{filter:blur(4px)}
+0%{filter:blur(10px)}
+50%{filter:blur(3px)}
 100%{filter:blur(0)}
 
 }
@@ -122,12 +123,9 @@ animation: sharpen 0.6s linear;
 
 <body>
 
-
 <div id="xpWindow">
 
-<div id="xpTitle">
-Uruchamianie aplikacji
-</div>
+<div id="xpTitle">Uruchamianie aplikacji</div>
 
 <div id="xpContent">
 
@@ -186,7 +184,6 @@ startVideo()
 
 }
 
-
 /* VIDEO */
 
 function startVideo(){
@@ -205,7 +202,6 @@ startBoot()
 }
 
 }
-
 
 /* BIOS */
 
@@ -279,7 +275,6 @@ next()
 
 }
 
-
 /* LOADING */
 
 function startLoading(){
@@ -291,7 +286,6 @@ boot.textContent+="\nUruchamianie CV kandydata... 0%"
 let interval=setInterval(()=>{
 
 percent+=Math.floor(Math.random()*8)+2
-
 if(percent>100) percent=100
 
 boot.textContent =
@@ -312,8 +306,45 @@ startTerminal()
 
 }
 
-
 /* TERMINAL */
+
+function clearConsole(){
+
+boot.textContent=""
+document.getElementById("photoBox").innerHTML=""
+boot.textContent+="C:\\CV> /pomoc\n"
+boot.textContent+="/profil /wyksztalcenie /umiejetnosci /zdjęcie\n\n"
+
+}
+
+function restoreSystem(){
+
+let percent=0
+
+boot.textContent+="Przywracanie ustawień... 0%"
+
+let interval=setInterval(()=>{
+
+percent+=Math.floor(Math.random()*8)+2
+if(percent>100) percent=100
+
+boot.textContent =
+boot.textContent.replace(/Przywracanie ustawień... \d+%/,
+"Przywracanie ustawień... "+percent+"%")
+
+if(percent==100){
+
+clearInterval(interval)
+
+setTimeout(()=>{
+clearConsole()
+},600)
+
+}
+
+},120)
+
+}
 
 function startTerminal(){
 
@@ -357,8 +388,9 @@ else if(cmd==="/zdjęcie"){
 photoStage=1
 
 document.getElementById("photoBox").innerHTML=
+'<img id="photo" class="photo" src="obraz.png">'
 
-'<img id="photo" class="photo" src="obraz.png" width="140"><br>Jakość: 140p<br>Czy poprawić jakość zdjęcia? (tak/nie)'
+boot.textContent+="Czy poprawić jakość zdjęcia? (tak/nie)\n"
 
 command.value=""
 return
@@ -366,6 +398,8 @@ return
 }
 
 else if(cmd==="tak" && photoStage>0){
+
+photoStage++
 
 let photo=document.getElementById("photo")
 
@@ -375,30 +409,18 @@ setTimeout(()=>{
 photo.classList.remove("pixelEffect")
 },600)
 
-photoStage++
+photo.src="obraz"+photoStage+".png"
 
-if(photoStage==2){
+if(photoStage==4){
 
-document.getElementById("photoBox").innerHTML+=
-"<br>Jakość: 360p<br>Czy poprawić jakość zdjęcia? (tak/nie)"
-
-}
-
-else if(photoStage==3){
-
-document.getElementById("photoBox").innerHTML+=
-"<br>Jakość: HD<br>Czy poprawić jakość zdjęcia? (tak/nie)"
-
+boot.textContent+="BŁĄD: przekroczono maksymalną jakość zdjęcia\n"
+restoreSystem()
+photoStage=0
 }
 
 else{
 
-photo.src="obraz2.png"
-
-document.getElementById("photoBox").innerHTML+=
-"<br>BŁĄD: przekroczono maksymalną jakość zdjęcia."
-
-photoStage=0
+boot.textContent+="Czy poprawić jakość zdjęcia? (tak/nie)\n"
 
 }
 
@@ -407,9 +429,13 @@ return
 
 }
 
-else if(cmd==="nie"){
-res="Anulowano poprawę jakości."
+else if(cmd==="nie" && photoStage>0){
+
+clearConsole()
 photoStage=0
+command.value=""
+return
+
 }
 
 else{
