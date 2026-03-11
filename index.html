@@ -22,6 +22,11 @@ align-items:center;
 overflow:hidden;
 }
 
+.error{
+color:#ff3b3b;
+font-weight:bold;
+}
+  
 /* XP WINDOW */
 
 #xpWindow{
@@ -287,7 +292,7 @@ boot.textContent+="\nUruchamianie CV kandydata... 0%"
 
 let interval=setInterval(()=>{
 
-percent+=Math.floor(Math.random()*8)+2
+percent+=Math.floor(Math.random()*7)+2
 if(percent>100) percent=100
 
 boot.textContent =
@@ -328,7 +333,7 @@ boot.textContent+="\nPrzywracanie ustawień... 0%"
 
 let interval=setInterval(()=>{
 
-percent+=Math.floor(Math.random()*4)+1
+percent+=Math.floor(Math.random()*6)+2
 if(percent>100) percent=100
 
 boot.textContent =
@@ -414,7 +419,7 @@ photo.classList.add("pixelEffect")
 
 if(photoStage==4){
 
-boot.textContent+="BŁĄD: przekroczono maksymalną jakość zdjęcia\n"
+boot.innerHTML += '<span class="error">BŁĄD: przekroczono maksymalną jakość zdjęcia</span>\n'
 restoreSystem()
 photoStage=0
 
