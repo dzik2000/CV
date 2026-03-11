@@ -25,7 +25,7 @@ font-size:22px;
 width:800px;
 }
 
-input{
+#hiddenInput{
 opacity:0;
 position:absolute;
 }
@@ -65,25 +65,21 @@ width:900px;
 <pre>
 
 Candidate system ready.
-Press any key to boot Candidate CV
+Press any key then ENTER to boot Candidate CV
 
 </pre>
 
 </div>
 
-<input id="keyInput">
-
+<input id="hiddenInput">
 
 <div id="videoContainer">
 
 <video id="introVideo" playsinline>
-
 <source src="intro.mp4" type="video/mp4">
-
 </video>
 
 </div>
-
 
 <div id="bios">
 
@@ -91,28 +87,31 @@ Press any key to boot Candidate CV
 
 </div>
 
-
 <script>
 
-const input = document.getElementById("keyInput")
+const input = document.getElementById("hiddenInput")
 const video = document.getElementById("introVideo")
 const videoContainer = document.getElementById("videoContainer")
 
+/* OTWARCIE KLAWIATURY */
+
 setTimeout(()=>{
-
 input.focus()
-
 },1000)
 
+/* CZEKAJ NA ENTER */
 
-input.addEventListener("input",()=>{
+input.addEventListener("keydown",function(e){
 
+if(e.key === "Enter"){
 startVideo()
+}
 
 })
 
-
 function startVideo(){
+
+input.blur()
 
 document.getElementById("screen").style.display="none"
 
@@ -131,7 +130,7 @@ startBoot()
 }
 
 
-/* BIOS BOOT */
+/* BIOS */
 
 const boot=document.getElementById("boot")
 
@@ -173,7 +172,6 @@ setTimeout(callback,200)
 
 }
 
-
 function startBoot(){
 
 document.getElementById("bios").style.display="block"
@@ -203,7 +201,6 @@ next()
 
 }
 
-
 function memoryTest(){
 
 let interval=setInterval(()=>{
@@ -218,7 +215,7 @@ clearInterval(interval)
 
 boot.textContent+=" OK\n\n"
 boot.textContent+="Booting DomekOS...\n\n"
-boot.textContent+="Type /help to list commands\n\n"
+boot.textContent+="Type /help\n\n"
 
 startTerminal()
 
@@ -233,7 +230,7 @@ startTerminal()
 
 function startTerminal(){
 
-let terminalHTML = `
+let html=`
 
 <span>C:\\CV></span>
 <input id="command">
@@ -242,7 +239,7 @@ let terminalHTML = `
 
 `
 
-document.getElementById("bios").innerHTML += terminalHTML
+document.getElementById("bios").innerHTML+=html
 
 const commandInput=document.getElementById("command")
 const output=document.getElementById("output")
@@ -276,7 +273,7 @@ res="Instalacja Windows\nDiagnostyka sprzętu\nLinux\nAutomatyzacja Python"
 break
 
 case "/zadania":
-res="Instalacja systemów operacyjnych\nKonfiguracja stacji roboczych\nHelpdesk"
+res="Instalacja systemów\nHelpdesk\nKonfiguracja stacji roboczych"
 break
 
 case "/kontakt":
