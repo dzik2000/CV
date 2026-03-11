@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jan Kowalski CV</title>
+<title>Jaromir Szczuka CV</title>
 
 <style>
 
@@ -107,7 +107,7 @@ width:300px;
 
 .photo{
 margin-top:10px;
-max-width:90px;
+max-width:120px;
 image-rendering:pixelated;
 }
 
@@ -138,7 +138,7 @@ animation: sharpen 0.9s linear;
 <div id="xpContent">
 
 Czy chcesz uruchomić aplikację  
-<b>Jan Kowalski CV</b> ?
+<b>Jaromir Szczuka CV</b> ?
 
 <br><br>
 
@@ -219,15 +219,15 @@ const bootLines=[
 
 "Urząd statystyczny w Katowicach 2.0",
 "Copyright 1912 - 1945 Miasto Katowice",
-"",
+
 "Wykrywanie nowego zgłoszenia...",
-"CV: Jan Kowalski wykryto",
-"",
+"CV: Jaromir Szczuka - wykryto",
+
 "Kalibracja kubka z kawą",
 "Sprawdzanie poziomu motywacji",
 "Test cierpliwości rekrutera",
 "ok",
-"",
+
 
 ]
 
@@ -292,7 +292,7 @@ boot.textContent+="\nUruchamianie CV kandydata... 0%"
 
 let interval=setInterval(()=>{
 
-percent+=Math.floor(Math.random()*6)+2
+percent+=Math.floor(Math.random()*4)+3
 if(percent>100) percent=100
 
 boot.textContent =
