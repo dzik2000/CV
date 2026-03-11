@@ -101,12 +101,12 @@ width:300px;
 
 .photo{
 margin-top:10px;
-max-width:300px;
+max-width:180px;
 image-rendering:pixelated;
 }
 
 .pixelEffect{
-animation: sharpen 0.6s linear;
+animation: sharpen 0.35s linear;
 }
 
 @keyframes sharpen{
@@ -321,11 +321,11 @@ function restoreSystem(){
 
 let percent=0
 
-boot.textContent+="Przywracanie ustawień... 0%"
+boot.textContent+="\nPrzywracanie ustawień... 0%"
 
 let interval=setInterval(()=>{
 
-percent+=Math.floor(Math.random()*8)+2
+percent+=Math.floor(Math.random()*4)+1
 if(percent>100) percent=100
 
 boot.textContent =
@@ -338,11 +338,11 @@ clearInterval(interval)
 
 setTimeout(()=>{
 clearConsole()
-},600)
+},1200)
 
 }
 
-},120)
+},260)
 
 }
 
@@ -403,22 +403,19 @@ photoStage++
 
 let photo=document.getElementById("photo")
 
-photo.classList.add("pixelEffect")
-
-setTimeout(()=>{
-photo.classList.remove("pixelEffect")
-},600)
-
 photo.src="obraz"+photoStage+".png"
+
+photo.classList.remove("pixelEffect")
+void photo.offsetWidth
+photo.classList.add("pixelEffect")
 
 if(photoStage==4){
 
 boot.textContent+="BŁĄD: przekroczono maksymalną jakość zdjęcia\n"
 restoreSystem()
 photoStage=0
-}
 
-else{
+}else{
 
 boot.textContent+="Czy poprawić jakość zdjęcia? (tak/nie)\n"
 
