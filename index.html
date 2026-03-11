@@ -25,16 +25,29 @@ height:100vh;
 touch-action:manipulation;
 }
 
+/* EKRAN STARTOWY */
+
 #screen{
 font-size:22px;
-width:800px;
+max-width:90vw;
 }
+
+/* ZAWIJANIE TEKSTU */
+
+pre{
+white-space:pre-wrap;
+word-break:break-word;
+}
+
+/* UKRYTY INPUT */
 
 #hiddenInput{
 opacity:0;
 position:absolute;
 font-size:16px;
 }
+
+/* VIDEO */
 
 #videoContainer{
 position:fixed;
@@ -55,11 +68,14 @@ height:100%;
 object-fit:cover;
 }
 
+/* BIOS */
+
 #bios{
 display:none;
-width:900px;
-max-width:90%;
+max-width:90vw;
 }
+
+/* TERMINAL */
 
 input{
 background:black;
@@ -81,13 +97,15 @@ outline:none;
 <pre>
 
 Candidate system ready.
-Press any key then ENTER to boot Candidate CV
+Press any key then ENTER
+to boot Candidate CV
 
 </pre>
 
 </div>
 
 <input id="hiddenInput" autocomplete="off">
+
 
 <div id="videoContainer">
 
@@ -97,11 +115,13 @@ Press any key then ENTER to boot Candidate CV
 
 </div>
 
+
 <div id="bios">
 
 <pre id="boot"></pre>
 
 </div>
+
 
 <script>
 
@@ -109,13 +129,13 @@ const input = document.getElementById("hiddenInput")
 const video = document.getElementById("introVideo")
 const videoContainer = document.getElementById("videoContainer")
 
-/* OTWÓRZ KLAWIATURĘ PO 1s */
+/* OTWARCIE KLAWIATURY */
 
 setTimeout(()=>{
 input.focus()
 },1000)
 
-/* CZEKAJ NA ENTER */
+/* START FILMU PO ENTER */
 
 input.addEventListener("keydown",function(e){
 
@@ -124,8 +144,6 @@ startVideo()
 }
 
 })
-
-/* START FILMU */
 
 function startVideo(){
 
