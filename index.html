@@ -4,68 +4,51 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>DomekOS CV</title>
+<title>Jan Kowalski CV</title>
 
 <style>
 
-html, body{
+body{
 margin:0;
-padding:0;
 background:black;
 color:#00ff66;
 font-family:monospace;
-overflow:hidden;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-touch-action:manipulation;
+overflow:hidden;
 }
 
-/* EKRAN STARTOWY */
+/* XP WINDOW */
 
-#screen{
-font-size:22px;
-max-width:90vw;
+#xpWindow{
+background:#ece9d8;
+border:2px solid #0054e3;
+width:320px;
+font-family:Tahoma;
+color:black;
+box-shadow:4px 4px 10px rgba(0,0,0,0.5);
 }
 
-/* ZAWIJANIE TEKSTU */
-
-pre{
-white-space:pre-wrap;
-word-break:break-word;
+#xpTitle{
+background:linear-gradient(#3a6ea5,#1c3f94);
+color:white;
+padding:4px;
+font-size:14px;
 }
 
-/* UKRYTY INPUT */
-
-#hiddenInput{
-opacity:0;
-position:absolute;
-font-size:16px;
+#xpContent{
+padding:20px;
+text-align:center;
 }
 
-/* VIDEO */
-
-#videoContainer{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-display:none;
-justify-content:center;
-align-items:center;
-z-index:1000;
-}
-
-#videoContainer video{
-width:100%;
-height:100%;
-object-fit:cover;
+button{
+margin:10px;
+padding:6px 20px;
+font-family:Tahoma;
 }
 
 /* BIOS */
@@ -73,9 +56,15 @@ object-fit:cover;
 #bios{
 display:none;
 max-width:90vw;
+white-space:pre-wrap;
 }
 
 /* TERMINAL */
+
+#terminal{
+display:none;
+max-width:90vw;
+}
 
 input{
 background:black;
@@ -86,148 +75,115 @@ font-size:18px;
 outline:none;
 }
 
+img{
+max-width:300px;
+display:block;
+margin-top:10px;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div id="screen">
+<div id="xpWindow">
 
-<pre>
-
-Candidate system ready.
-Press any key then ENTER
-to boot Candidate CV
-
-</pre>
-
+<div id="xpTitle">
+Uruchamianie aplikacji
 </div>
 
-<input id="hiddenInput" autocomplete="off">
+<div id="xpContent">
 
+Czy chcesz uruchomić aplikację  
+<b>Jan Kowalski CV</b> ?
 
-<div id="videoContainer">
+<br><br>
 
-<video id="introVideo" playsinline>
-<source src="intro.mp4" type="video/mp4">
-</video>
+<button onclick="start()">Tak</button>
+<button onclick="no()">Nie</button>
+
+</div>
 
 </div>
 
 
 <div id="bios">
-
 <pre id="boot"></pre>
+</div>
+
+
+<div id="terminal">
+
+<span>C:\CV></span>
+<input id="command">
+
+<div id="output"></div>
 
 </div>
 
 
 <script>
 
-const input = document.getElementById("hiddenInput")
-const video = document.getElementById("introVideo")
-const videoContainer = document.getElementById("videoContainer")
+/* XP WINDOW */
 
-/* OTWARCIE KLAWIATURY */
+function no(){
+
+document.getElementById("xpWindow").style.display="none"
 
 setTimeout(()=>{
-input.focus()
-},1000)
+document.getElementById("xpWindow").style.display="block"
+},300)
 
-/* START FILMU PO ENTER */
-
-input.addEventListener("keydown",function(e){
-
-if(e.key==="Enter"){
-startVideo()
 }
 
-})
+function start(){
 
-function startVideo(){
-
-input.blur()
-
-document.getElementById("screen").style.display="none"
-
-videoContainer.style.display="flex"
-
-video.play()
-
-video.onended=function(){
-
-videoContainer.style.display="none"
-
+document.getElementById("xpWindow").style.display="none"
 startBoot()
 
 }
 
-}
-
-
-/* BIOS BOOT */
+/* BIOS */
 
 const boot=document.getElementById("boot")
 
-const bootLines=[
+const lines=[
 
-"Phoenix BIOS v4.0 Release 6.0",
-"Copyright 1985-1999 Phoenix Technologies",
+"Urząd statystyczny w Katowicach 2.0",
+"Copyright 1912-1945 Miasto Katowice",
 "",
-"Detecting hardware...",
-"CPU: Intel Pentium detected",
+"Niezidentyfikowany system...",
+"Wykrywanie nowego zgłoszenia...",
+"CV: Jan Kowalski wykryto",
 "",
-"Memory Test:"
+"Kalibracja kubka z kawą...",
+"Sprawdzanie poziomu motywacji...",
+"Test cierpliwości rekrutera...",
+"",
+"Uruchamianie CV kandydata..."
 
 ]
 
-let ram=0
-
-function typeLine(text,callback){
-
 let i=0
-
-let interval=setInterval(()=>{
-
-boot.textContent+=text[i]
-
-i++
-
-if(i>=text.length){
-
-clearInterval(interval)
-
-boot.textContent+="\n"
-
-setTimeout(callback,200)
-
-}
-
-},20)
-
-}
 
 function startBoot(){
 
 document.getElementById("bios").style.display="block"
 
-let i=0
-
 function next(){
 
-if(i<bootLines.length){
+if(i<lines.length){
 
-typeLine(bootLines[i],()=>{
+boot.innerHTML+=lines[i]+"\n"
 
 i++
-next()
 
-})
+setTimeout(next,400)
 
 }else{
 
-memoryTest()
+loadCV()
 
 }
 
@@ -237,93 +193,129 @@ next()
 
 }
 
-function memoryTest(){
+function loadCV(){
+
+let percent=0
 
 let interval=setInterval(()=>{
 
-ram+=512
+boot.innerHTML="Uruchamianie CV kandydata... "+percent+"%"
 
-boot.textContent=boot.textContent.replace(/Memory Test:.*/,"Memory Test: "+ram+"K")
+percent++
 
-if(ram>=8192){
+if(percent>100){
 
 clearInterval(interval)
 
-boot.textContent+=" OK\n\n"
-boot.textContent+="Booting DomekOS...\n\n"
-boot.textContent+="Type /help to list commands\n\n"
+boot.innerHTML+="\n\nNapisz /pomoc aby wyświetlić dostępne komendy\n\n"
 
 startTerminal()
 
 }
 
-},120)
+},30)
 
 }
-
 
 /* TERMINAL */
 
 function startTerminal(){
 
-let html=`
+document.getElementById("terminal").style.display="block"
 
-<span>C:\\CV></span>
-<input id="command">
-
-<div id="output"></div>
-
-`
-
-document.getElementById("bios").innerHTML+=html
-
-const commandInput=document.getElementById("command")
+const command=document.getElementById("command")
 const output=document.getElementById("output")
 
-commandInput.focus()
+command.focus()
 
-commandInput.addEventListener("keydown",function(e){
+let photoStage=0
+
+command.addEventListener("keydown",function(e){
 
 if(e.key==="Enter"){
 
-let cmd=commandInput.value.trim()
+let cmd=command.value.trim()
 
 let res=""
 
-switch(cmd){
+if(cmd==="/pomoc"){
+res="/profil /wyksztalcenie /umiejetnosci /zdjęcie"
+}
 
-case "/help":
-res="/profil /wyksztalcenie /umiejetnosci /zadania /kontakt"
-break
+else if(cmd==="/profil"){
+res="Jan Kowalski\nKandydat na młodszego informatyka"
+}
 
-case "/profil":
-res="Kandydat: Domek\nStanowisko: Młodszy Informatyk"
-break
+else if(cmd==="/wyksztalcenie"){
+res="Technikum informatyczne"
+}
 
-case "/wyksztalcenie":
-res="Technikum Informatyczne"
-break
+else if(cmd==="/umiejetnosci"){
+res="Instalacja systemów\nHelpdesk\nDiagnostyka sprzętu"
+}
 
-case "/umiejetnosci":
-res="Instalacja Windows\nDiagnostyka sprzętu\nLinux\nAutomatyzacja Python"
-break
+else if(cmd==="/zdjęcie"){
 
-case "/zadania":
-res="Instalacja systemów operacyjnych\nHelpdesk\nKonfiguracja stacji roboczych"
-break
+photoStage=1
 
-case "/kontakt":
-res="email: twoj@email.pl"
-break
+output.innerHTML+=`
+<div>
+<img src="obraz.png" style="image-rendering:pixelated;width:120px">
+<p>Czy poprawić jakość zdjęcia? Tak/Nie</p>
+</div>
+`
 
-default:
-res="Unknown command"
+command.value=""
+return
+}
 
+else if(cmd.toLowerCase()==="tak" && photoStage>0){
+
+photoStage++
+
+if(photoStage==2){
+
+output.innerHTML+=`
+<img src="obraz.png" style="width:200px">
+<p>Czy poprawić jakość zdjęcia? Tak/Nie</p>
+`
+}
+
+else if(photoStage==3){
+
+output.innerHTML+=`
+<img src="obraz.png" style="width:300px">
+<p>Czy poprawić jakość zdjęcia? Tak/Nie</p>
+`
+}
+
+else{
+
+output.innerHTML+=`
+<img src="obraz2.png">
+<p>BŁĄD: przekroczono maksymalną jakość zdjęcia.</p>
+`
+
+photoStage=0
+
+}
+
+command.value=""
+return
+}
+
+else if(cmd.toLowerCase()==="nie"){
+res="Anulowano poprawę jakości."
+photoStage=0
+}
+
+else{
+res="Nieznana komenda"
 }
 
 output.innerHTML+="<pre>"+cmd+"\n"+res+"</pre>"
 
-commandInput.value=""
+command.value=""
 
 }
 
