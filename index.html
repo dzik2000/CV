@@ -14,27 +14,21 @@ background:black;
 color:#00ff66;
 font-family:monospace;
 overflow:hidden;
-}
-
-/* BIOS */
-
-#bios{
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 }
 
-#terminal{
-width:900px;
+#screen{
+font-size:22px;
+width:800px;
 }
 
-pre{
-font-size:20px;
-line-height:1.4;
+input{
+opacity:0;
+position:absolute;
 }
-
-/* VIDEO */
 
 #videoContainer{
 position:fixed;
@@ -55,15 +49,9 @@ height:100%;
 object-fit:cover;
 }
 
-/* TERMINAL */
-
-input{
-background:black;
-border:none;
-color:#00ff66;
-font-family:monospace;
-font-size:18px;
-outline:none;
+#bios{
+display:none;
+width:900px;
 }
 
 </style>
@@ -72,20 +60,19 @@ outline:none;
 
 <body>
 
-<!-- BIOS -->
+<div id="screen">
 
-<div id="bios">
+<pre>
 
-<div id="terminal">
+Candidate system ready.
+Press any key to boot Candidate CV
 
-<pre id="boot"></pre>
+</pre>
 
 </div>
 
-</div>
+<input id="keyInput">
 
-
-<!-- VIDEO -->
 
 <div id="videoContainer">
 
@@ -98,16 +85,60 @@ outline:none;
 </div>
 
 
+<div id="bios">
+
+<pre id="boot"></pre>
+
+</div>
+
+
 <script>
+
+const input = document.getElementById("keyInput")
+const video = document.getElementById("introVideo")
+const videoContainer = document.getElementById("videoContainer")
+
+setTimeout(()=>{
+
+input.focus()
+
+},1000)
+
+
+input.addEventListener("input",()=>{
+
+startVideo()
+
+})
+
+
+function startVideo(){
+
+document.getElementById("screen").style.display="none"
+
+videoContainer.style.display="flex"
+
+video.play()
+
+video.onended = function(){
+
+videoContainer.style.display="none"
+
+startBoot()
+
+}
+
+}
+
 
 /* BIOS BOOT */
 
-const boot = document.getElementById("boot")
+const boot=document.getElementById("boot")
 
 const bootLines=[
 
 "Phoenix BIOS v4.0 Release 6.0",
-"Copyright 1985-1999 Phoenix Technologies Ltd.",
+"Copyright 1985-1999 Phoenix Technologies",
 "",
 "Detecting hardware...",
 "CPU: Intel Pentium detected",
@@ -142,7 +173,10 @@ setTimeout(callback,200)
 
 }
 
+
 function startBoot(){
+
+document.getElementById("bios").style.display="block"
 
 let i=0
 
@@ -169,6 +203,7 @@ next()
 
 }
 
+
 function memoryTest(){
 
 let interval=setInterval(()=>{
@@ -182,47 +217,14 @@ if(ram>=8192){
 clearInterval(interval)
 
 boot.textContent+=" OK\n\n"
-boot.textContent+="Candidate system ready.\n"
-boot.textContent+="Press any key to boot Candidate CV\n"
-
-waitForKey()
-
-}
-
-},120)
-
-}
-
-/* WAIT FOR KEY */
-
-function waitForKey(){
-
-document.addEventListener("keydown",startVideo)
-
-}
-
-/* START VIDEO */
-
-function startVideo(){
-
-document.removeEventListener("keydown",startVideo)
-
-document.getElementById("bios").style.display="none"
-
-let videoContainer = document.getElementById("videoContainer")
-let video = document.getElementById("introVideo")
-
-videoContainer.style.display="flex"
-
-video.play()
-
-video.onended=function(){
-
-videoContainer.style.display="none"
+boot.textContent+="Booting DomekOS...\n\n"
+boot.textContent+="Type /help to list commands\n\n"
 
 startTerminal()
 
 }
+
+},120)
 
 }
 
@@ -231,29 +233,21 @@ startTerminal()
 
 function startTerminal(){
 
-document.body.innerHTML=`
-
-<div style="padding:40px">
-
-<pre>
-
-DomekOS Candidate Terminal
-
-Type /help
-
-</pre>
+let terminalHTML = `
 
 <span>C:\\CV></span>
 <input id="command">
 
 <div id="output"></div>
 
-</div>
-
 `
+
+document.getElementById("bios").innerHTML += terminalHTML
 
 const commandInput=document.getElementById("command")
 const output=document.getElementById("output")
+
+commandInput.focus()
 
 commandInput.addEventListener("keydown",function(e){
 
@@ -303,11 +297,6 @@ commandInput.value=""
 })
 
 }
-
-
-/* START BIOS */
-
-startBoot()
 
 </script>
 
