@@ -23,11 +23,11 @@ overflow:hidden;
 }
 
 .error{
-  color:#ff3b3b;
-  font-weight:bold;
-  white-space:pre-wrap;
+color:#ff3b3b;
+font-weight:bold;
+white-space:pre-wrap;
 }
-  
+
 /* XP WINDOW */
 
 #xpWindow{
@@ -93,20 +93,19 @@ border-radius:0;
 }
 
 }
+
 /* BIOS */
 
 #bios{
 display:none;
 width:90vw;
 max-width:900px;
-}
-/* DOMYŚLNA WIELKOŚĆ (telefon) */
-
-#bios{
 font-size:16px;
+max-height:80vh;
+overflow-y:auto;
+scroll-behavior:smooth;
+padding-right:10px;
 }
-
-/* KOMPUTER */
 
 @media screen and (min-width:768px){
 
@@ -115,6 +114,7 @@ font-size:20px;
 }
 
 }
+
 pre{
 white-space:pre-wrap;
 word-break:break-word;
@@ -139,8 +139,6 @@ margin-top:10px;
 max-width:120px;
 image-rendering:pixelated;
 }
-
-/* wolniejsza animacja */
 
 .pixelEffect{
 animation: sharpen 0.9s linear;
@@ -178,7 +176,6 @@ Czy chcesz uruchomić aplikację
 
 </div>
 
-
 <div id="videoContainer">
 
 <video id="introVideo" playsinline>
@@ -186,7 +183,6 @@ Czy chcesz uruchomić aplikację
 </video>
 
 </div>
-
 
 <div id="bios">
 
@@ -199,8 +195,16 @@ Czy chcesz uruchomić aplikację
 
 </div>
 
-
 <script>
+
+/* AUTO SCROLL */
+
+function scrollTerminal(){
+
+const bios=document.getElementById("bios")
+bios.scrollTop=bios.scrollHeight
+
+}
 
 /* XP */
 
@@ -259,7 +263,6 @@ const bootLines=[
 ".",
 "ok",
 
-
 ]
 
 let i=0
@@ -271,6 +274,7 @@ let index=0
 let interval=setInterval(()=>{
 
 boot.textContent+=text[index]
+scrollTerminal()
 
 index++
 
@@ -278,6 +282,8 @@ if(index>=text.length){
 
 clearInterval(interval)
 boot.textContent+="\n"
+scrollTerminal()
+
 setTimeout(callback,200)
 
 }
@@ -320,6 +326,7 @@ function startLoading(){
 let percent=0
 
 boot.textContent+="\n\nUruchamianie CV kandydata... 0%"
+scrollTerminal()
 
 let interval=setInterval(()=>{
 
@@ -330,10 +337,13 @@ boot.textContent =
 boot.textContent.replace(/Uruchamianie CV kandydata... \d+%/,
 "Uruchamianie CV kandydata... "+percent+"%")
 
+scrollTerminal()
+
 if(percent==100){
 
 clearInterval(interval)
-boot.textContent = ""   // czyści ekran
+
+boot.textContent=""
 boot.textContent+="\n\nNapisz /pomoc aby wyświetlić dostępne komendy\n\n"
 
 startTerminal()
@@ -354,6 +364,8 @@ document.getElementById("photoBox").innerHTML=""
 boot.textContent+="C:\\CV> /pomoc\n"
 boot.textContent+="/zainteresowania /wyksztalcenie /umiejetnosci /certyfikaty /zdjecie\n\n"
 
+scrollTerminal()
+
 }
 
 function restoreSystem(){
@@ -361,6 +373,7 @@ function restoreSystem(){
 let percent=0
 
 boot.textContent+="\nPrzywracanie ustawień... 0%"
+scrollTerminal()
 
 let interval=setInterval(()=>{
 
@@ -370,6 +383,8 @@ if(percent>100) percent=100
 boot.textContent =
 boot.textContent.replace(/Przywracanie ustawień... \d+%/,
 "Przywracanie ustawień... "+percent+"%")
+
+scrollTerminal()
 
 if(percent==100){
 
@@ -403,6 +418,7 @@ if(e.key==="Enter"){
 let cmd=command.value.trim().toLowerCase()
 
 boot.textContent+="C:\\CV> "+cmd+"\n"
+scrollTerminal()
 
 let res=""
 
@@ -415,23 +431,26 @@ res="Jan Kowalski\nKandydat na młodszego informatyka"
 }
 
 else if(cmd==="/wyksztalcenie"){
-res="VI LICEUM OGÓLNOKSZTAŁCĄCE IM.
-JANUSZA KORCZAKA (2016-2019)\nWYŻSZA SZKOŁA TECHNOLOGI
+res=`VI LICEUM OGÓLNOKSZTAŁCĄCE IM.
+JANUSZA KORCZAKA (2016-2019)
+WYŻSZA SZKOŁA TECHNOLOGI
 INFORMATYCZNYCH W KATOWICACH
-      INFORMATYKA (2019 - 2020)\nUNIWERSYTET ŚLĄSKI - WYDZIAŁ NAUK
+INFORMATYKA (2019 - 2020)
+UNIWERSYTET ŚLĄSKI - WYDZIAŁ NAUK
 SPOŁECZNYCH POLITOLOGIA
-      (2020 - 2024) \nUNIWERSYTET ŚLĄSKI - WYDZIAŁ NAUK
-HUMANISTYCZNYCH  KULTUROZNASTWO
-      (2024 - 2026) \n"
+(2020 - 2024)
+UNIWERSYTET ŚLĄSKI - WYDZIAŁ NAUK
+HUMANISTYCZNYCH KULTUROZNASTWO
+(2024 - 2026)`
 }
 
 else if(cmd==="/umiejetnosci"){
-res="Obsługa komputera plus
-znajomość programów typu
-office, excel\nWysoka kultura osobista\nCierpliwość i pozytywne
-nastawienie"
+res=`Obsługa komputera
+Office / Excel
+Wysoka kultura osobista
+Cierpliwość i pozytywne nastawienie`
 }
-  
+
 else if(cmd==="/certyfikaty"){
 res="Instalacja systemów\nHelpdesk\nDiagnostyka sprzętu"
 }
@@ -444,6 +463,7 @@ document.getElementById("photoBox").innerHTML=
 '<img id="photo" class="photo" src="obraz.png">'
 
 boot.textContent+="Czy poprawić jakość zdjęcia? (tak/nie)\n"
+scrollTerminal()
 
 command.value=""
 return
@@ -464,7 +484,7 @@ photo.classList.add("pixelEffect")
 
 if(photoStage==4){
 
-boot.innerHTML += `<span class="error">
+boot.innerHTML+=`<span class="error">
 === SYSTEM ERROR ===
 Kod: IMG_OVRFLW
 Opis: Przekroczono maksymalną rozdzielczość obrazu
@@ -472,12 +492,14 @@ Operacja przerwana
 Spróbuj ponownie lub przywróć ustawienia
 ==================
 </span>\n`
+
 restoreSystem()
 photoStage=0
 
 }else{
 
 boot.textContent+="Czy poprawić jakość zdjęcia? (tak/nie)\n"
+scrollTerminal()
 
 }
 
@@ -500,6 +522,7 @@ res="Nieznana komenda"
 }
 
 boot.textContent+=res+"\n"
+scrollTerminal()
 
 command.value=""
 
@@ -512,5 +535,4 @@ command.value=""
 </script>
 
 </body>
-
 </html>
