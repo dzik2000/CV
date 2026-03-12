@@ -72,20 +72,24 @@ align-items:center;
 z-index:1000;
 }
 
+/* KOMPUTER */
+
 #videoContainer video{
-width:50vw;     /* trochę węższe */
-height:100vh;
-object-fit:contain;
+width:60vmin;
+height:60vmin;
+object-fit:cover;
+border-radius:6px;
 }
 
 /* TELEFON */
 
-@media (max-width:768px){
+@media screen and (max-width:600px){
 
 #videoContainer video{
 width:100%;
 height:100%;
 object-fit:contain;
+border-radius:0;
 }
 
 }
